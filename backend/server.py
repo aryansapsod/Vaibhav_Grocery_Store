@@ -8,8 +8,17 @@ app = Flask(__name__)
 
 connection = get_sql_connection()
 
-@app.route('/getProducts', methods=['GET'])
+@app.route('/getProducts', methods=['POST', 'GET'])
 def get_products():
+    # connection = get_sql_connection()
+    products = get_all_products(connection)
+    response = jsonify(products)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+@app.route('/deleteProducts', methods=['POST', 'GET'])
+def delete_products():
+    return_id = delete_products(connection, request.form('product_id'))
     # connection = get_sql_connection()
     products = get_all_products(connection)
     response = jsonify(products)
